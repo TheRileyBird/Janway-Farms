@@ -3,7 +3,6 @@ import '../styles/global.css';
 import { Image } from 'astro:assets';
 import {
   ArrowRight,
-  Check,
   ChevronDown,
   Flower2,
   HeartHandshake,
@@ -12,9 +11,8 @@ import {
   MapPin,
   Menu,
   PackageCheck,
-  Phone,
-  Sprout,
   Star,
+  Store,
   X,
 } from '@lucide/astro';
 import logo from '../assets/images/logo.png';
@@ -25,12 +23,18 @@ import beesCloseup from '../assets/images/bees-closeup.jpg';
 import honeyFood from '../assets/images/honey-food.jpg';
 import hivesSmoke from '../assets/images/hives-smoke.jpg';
 import honeyBottle from '../assets/images/honey-bottle.png';
+import bee from '../assets/images/bee.png';
+import bee2 from '../assets/images/bee2.png';
+import bee3 from '../assets/images/bee3.png';
+import bee4 from '../assets/images/bee4.png';
 
 const process = [
-  'Hive care follows the season, not a factory schedule.',
-  'Honey is handled in small batches for clear flavor and texture.',
-  'Local pickup requests go straight to the farm through Netlify Forms.',
+  'Josh Janway brings 10 years of beekeeping experience to every hive check and harvest.',
+  'The honey is 100% raw, unprocessed, and unfiltered so natural pollen and enzymes remain intact.',
+  'Janway Farms supports Baton Rouge markets with local honey and sustainable agricultural practices.',
 ];
+
+const retailLocations = ['Rouse’s', 'Oak Point', 'Southside Produce', 'The Fresh Market', 'Hi Nabor', 'Alexander’s'];
 ---
 
 <!doctype html>
@@ -42,30 +46,29 @@ const process = [
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,650;9..144,750&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <title>Janway Farms</title>
     <style>[x-cloak]{display:none!important}</style>
   </head>
   <body class="min-h-screen font-sans text-earth-900 antialiased">
     <main
-      x-data="{ menuOpen: false, selected: 'Raw Honey', scrolled: false }"
-      x-on:scroll.window="scrolled = window.scrollY > 20"
+      x-data="{ menuOpen: false, selected: 'Raw Honey', onHero: true, updateNav() { this.onHero = window.scrollY < (document.getElementById('top')?.offsetHeight || 0) - 96 } }"
+      x-init="updateNav()"
+      x-on:scroll.window="updateNav()"
+      x-on:resize.window="updateNav()"
       class="overflow-hidden"
     >
-      <header
-        class="fixed inset-x-0 top-0 z-50 transition"
-        x-bind:class="scrolled ? 'bg-earth-50/92 shadow-soft backdrop-blur' : 'bg-transparent'"
-      >
+      <header class="fixed inset-x-0 top-0 z-50 transition" x-bind:class="onHero ? 'bg-earth-950/20 backdrop-blur-sm' : 'bg-earth-50/86 shadow-soft backdrop-blur'">
         <nav class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
           <a href="#top" class="flex items-center gap-3">
             <Image src={logo} alt="Janway Farms raw honey logo" class="h-14 w-14 object-contain" widths={[112]} />
-            <span class="font-display text-xl font-bold text-earth-900">Janway Farms</span>
+            <span class="font-display text-xl font-normal tracking-wide transition" x-bind:class="onHero ? 'text-white' : 'text-earth-900'">Janway Farms</span>
           </a>
-          <div class="hidden items-center gap-8 text-sm font-semibold text-earth-600 md:flex">
-            <a class="hover:text-earth-900" href="#honey">Honey</a>
-            <a class="hover:text-earth-900" href="#farm">The Farm</a>
-            <a class="hover:text-earth-900" href="#visit">Visit</a>
-            <a class="rounded-full bg-earth-900 px-5 py-2.5 text-earth-50 shadow-soft transition hover:bg-earth-800" href="#order">Order pickup</a>
+          <div class="hidden items-center gap-8 text-sm font-semibold transition md:flex" x-bind:class="onHero ? 'text-white' : 'text-earth-700'">
+            <a class="hover:text-honey-300" href="#honey">Honey</a>
+            <a class="hover:text-honey-300" href="#farm">The Farm</a>
+            <a class="hover:text-honey-300" href="#visit">Visit</a>
+            <a class="rounded-full px-5 py-2.5 shadow-soft transition" x-bind:class="onHero ? 'bg-white text-earth-900 hover:bg-honey-100' : 'bg-earth-900 text-earth-50 hover:bg-earth-800'" href="#where-to-buy">Where To Buy</a>
           </div>
           <button
             type="button"
@@ -81,7 +84,7 @@ const process = [
           <a class="block rounded-md px-4 py-3 hover:bg-earth-100" href="#honey" x-on:click="menuOpen = false">Honey</a>
           <a class="block rounded-md px-4 py-3 hover:bg-earth-100" href="#farm" x-on:click="menuOpen = false">The Farm</a>
           <a class="block rounded-md px-4 py-3 hover:bg-earth-100" href="#visit" x-on:click="menuOpen = false">Visit</a>
-          <a class="block rounded-md bg-honey-400 px-4 py-3 text-earth-900" href="#order" x-on:click="menuOpen = false">Order pickup</a>
+          <a class="block rounded-md bg-honey-400 px-4 py-3 text-earth-900" href="#where-to-buy" x-on:click="menuOpen = false">Where To Buy</a>
         </div>
       </header>
 
@@ -91,43 +94,42 @@ const process = [
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,hsl(39_93%_55%/.22),transparent_28%),radial-gradient(circle_at_72%_14%,hsl(93_39%_36%/.24),transparent_24%)]"></div>
         <div class="relative mx-auto grid max-w-7xl gap-12 px-5 pb-16 sm:px-8 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
           <div class="max-w-2xl">
-            <p class="mb-5 inline-flex items-center gap-2 rounded-full bg-white/12 px-4 py-2 text-sm font-semibold text-honey-100 shadow-soft ring-1 ring-white/12 backdrop-blur">
-              <Sprout class="h-4 w-4" />
+            <p class="mb-5 font-eyebrow text-3xl text-honey-100">
               From hive to home
             </p>
-            <h1 class="font-display text-5xl font-bold leading-[0.96] text-white sm:text-6xl lg:text-7xl">
+            <h1 class="font-display text-5xl font-normal leading-[0.96] tracking-wide text-white sm:text-6xl lg:text-7xl">
               Janway Farms raw honey, grown close to home.
             </h1>
             <p class="mt-6 max-w-xl text-lg leading-8 text-earth-100">
               Small-batch raw honey, seasonal sunflower fields, and simple farm gifts from a family-run beekeeping operation.
             </p>
             <div class="mt-9 flex flex-col gap-3 sm:flex-row">
-              <a href="#order" class="inline-flex items-center justify-center gap-2 rounded-full bg-honey-400 px-6 py-3.5 text-sm font-extrabold text-earth-950 shadow-lift transition hover:bg-honey-300">
-                Request local pickup
+              <a href="#where-to-buy" class="inline-flex items-center justify-center gap-2 rounded-full bg-honey-400 px-6 py-3.5 text-sm font-extrabold text-earth-950 shadow-lift transition hover:bg-honey-300">
+                Find Janway’s Honey
                 <ArrowRight class="h-4 w-4" />
               </a>
               <a href="#farm" class="inline-flex items-center justify-center gap-2 rounded-full bg-white/12 px-6 py-3.5 text-sm font-bold text-white ring-1 ring-white/15 backdrop-blur transition hover:bg-white/18">
-                See the farm
+                See The Farm
                 <ChevronDown class="h-4 w-4" />
               </a>
             </div>
           </div>
           <div class="relative mx-auto w-full max-w-md translate-y-8 opacity-0 transition duration-700 lg:max-w-lg" x-intersect="$el.classList.add('translate-y-0','opacity-100')">
-            <div class="absolute -left-8 top-8 h-28 w-28 rounded-full bg-honey-300/30 blur-2xl"></div>
-            <div class="relative rounded-lg bg-white/10 p-4 shadow-lift ring-1 ring-white/12 backdrop-blur">
-              <Image src={honeyJars} alt="Janway Farms raw honey jars" class="aspect-[4/3] w-full rounded-md object-cover" widths={[480, 720, 960]} loading="eager" />
-              <div class="mt-4 grid grid-cols-3 gap-3 text-center">
-                <div class="rounded-md bg-white/12 p-3">
-                  <p class="text-2xl font-extrabold text-honey-200">Raw</p>
-                  <p class="mt-1 text-xs font-semibold text-earth-100">Unfiltered flavor</p>
+            <div class="absolute -inset-6 rounded-full bg-honey-300/25 blur-3xl"></div>
+            <div class="relative overflow-hidden rounded-lg bg-earth-50 shadow-lift">
+              <Image src={honeyJars} alt="Janway Farms raw honey jars" class="aspect-[5/4] w-full object-cover" widths={[480, 720, 960]} loading="eager" />
+              <div class="grid grid-cols-3 gap-px bg-earth-200 text-center">
+                <div class="bg-white p-4">
+                  <p class="text-lg font-extrabold text-earth-900">Raw</p>
+                  <p class="mt-1 text-xs font-semibold text-earth-500">Unprocessed</p>
                 </div>
-                <div class="rounded-md bg-white/12 p-3">
-                  <p class="text-2xl font-extrabold text-honey-200">Local</p>
-                  <p class="mt-1 text-xs font-semibold text-earth-100">Farm handled</p>
+                <div class="bg-white p-4">
+                  <p class="text-lg font-extrabold text-earth-900">Local</p>
+                  <p class="mt-1 text-xs font-semibold text-earth-500">Baton Rouge</p>
                 </div>
-                <div class="rounded-md bg-white/12 p-3">
-                  <p class="text-2xl font-extrabold text-honey-200">Gift</p>
-                  <p class="mt-1 text-xs font-semibold text-earth-100">Ready jars</p>
+                <div class="bg-white p-4">
+                  <p class="text-lg font-extrabold text-earth-900">Family</p>
+                  <p class="mt-1 text-xs font-semibold text-earth-500">Operated</p>
                 </div>
               </div>
             </div>
@@ -135,7 +137,8 @@ const process = [
         </div>
       </section>
 
-      <section id="honey" class="relative bg-earth-50 py-24 sm:py-28">
+      <section id="honey" class="relative overflow-hidden bg-earth-50 py-24 sm:py-28">
+        <Image src={bee2} alt="" aria-hidden="true" class="pointer-events-none absolute -right-20 top-12 w-72 rotate-12 opacity-[0.07] sm:w-96" widths={[360, 520]} />
         <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-earth-900/10 to-transparent"></div>
         <div class="mx-auto grid max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
           <div class="relative">
@@ -143,18 +146,18 @@ const process = [
             <Image src={honeyBottle} alt="Bottle of Janway Farms honey" class="relative mx-auto max-h-[520px] w-auto object-contain drop-shadow-2xl" widths={[320, 540]} />
           </div>
           <div>
-            <p class="text-sm font-extrabold uppercase tracking-[0.18em] text-honey-700">What we make</p>
-            <h2 class="mt-4 max-w-2xl font-display text-4xl font-bold leading-tight text-earth-900 sm:text-5xl">
+            <p class="font-eyebrow text-4xl text-honey-700">What we make</p>
+            <h2 class="mt-4 max-w-2xl font-display text-4xl font-normal leading-tight tracking-wide text-earth-900 sm:text-5xl">
               Honey is the product. Stewardship is the process.
             </h2>
             <p class="mt-5 max-w-2xl text-lg leading-8 text-earth-600">
-              The homepage leads with the jar because that is the clearest customer action: find honey, learn the story, request pickup.
+              Janway’s Raw Honey is harvested from our own hives around Baton Rouge and bottled without processing, filtering, or shortcuts.
             </p>
-            <div class="mt-9 grid gap-4 sm:grid-cols-3">
+            <div class="group mt-9 grid gap-4 sm:grid-cols-3">
               <button
                 type="button"
                 x-on:click="selected = 'Raw Honey'"
-                x-bind:class="selected === 'Raw Honey' ? 'bg-white shadow-lift ring-honey-300' : 'bg-earth-100/70 hover:bg-white shadow-soft ring-transparent'"
+                x-bind:class="selected === 'Raw Honey' ? 'bg-white shadow-lift ring-honey-300 group-hover:bg-earth-100/70 group-hover:shadow-soft group-hover:ring-transparent hover:bg-white hover:shadow-lift hover:ring-honey-300' : 'bg-earth-100/70 hover:bg-white shadow-soft ring-transparent hover:shadow-lift hover:ring-honey-300'"
                 class="rounded-lg p-5 text-left ring-2 transition"
               >
                 <span class="grid h-11 w-11 place-items-center rounded-full bg-honey-100 text-honey-700">
@@ -166,7 +169,7 @@ const process = [
               <button
                 type="button"
                 x-on:click="selected = 'Sunflower Days'"
-                x-bind:class="selected === 'Sunflower Days' ? 'bg-white shadow-lift ring-honey-300' : 'bg-earth-100/70 hover:bg-white shadow-soft ring-transparent'"
+                x-bind:class="selected === 'Sunflower Days' ? 'bg-white shadow-lift ring-honey-300' : 'bg-earth-100/70 hover:bg-white shadow-soft ring-transparent hover:shadow-lift hover:ring-honey-300'"
                 class="rounded-lg p-5 text-left ring-2 transition"
               >
                 <span class="grid h-11 w-11 place-items-center rounded-full bg-honey-100 text-honey-700">
@@ -178,7 +181,7 @@ const process = [
               <button
                 type="button"
                 x-on:click="selected = 'Farm Gifts'"
-                x-bind:class="selected === 'Farm Gifts' ? 'bg-white shadow-lift ring-honey-300' : 'bg-earth-100/70 hover:bg-white shadow-soft ring-transparent'"
+                x-bind:class="selected === 'Farm Gifts' ? 'bg-white shadow-lift ring-honey-300' : 'bg-earth-100/70 hover:bg-white shadow-soft ring-transparent hover:shadow-lift hover:ring-honey-300'"
                 class="rounded-lg p-5 text-left ring-2 transition"
               >
                 <span class="grid h-11 w-11 place-items-center rounded-full bg-honey-100 text-honey-700">
@@ -192,54 +195,68 @@ const process = [
         </div>
       </section>
 
-      <section id="farm" class="bg-white py-24 sm:py-28">
+      <section id="farm" class="relative overflow-hidden bg-white py-24 sm:py-28">
+        <Image src={bee3} alt="" aria-hidden="true" class="pointer-events-none absolute -left-24 top-8 w-96 opacity-[0.06]" widths={[420, 620]} />
         <div class="mx-auto max-w-7xl px-5 sm:px-8">
-          <div class="grid gap-10 lg:grid-cols-[1.05fr_.95fr] lg:items-end">
-            <div>
-              <p class="text-sm font-extrabold uppercase tracking-[0.18em] text-field-600">Behind the jar</p>
-              <h2 class="mt-4 max-w-2xl font-display text-4xl font-bold leading-tight text-earth-900 sm:text-5xl">
-                A working apiary, a seasonal field, and a more personal way to buy honey.
-              </h2>
+          <div class="grid gap-12 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
+            <div class="relative">
+              <Image src={beekeeper} alt="Janway Farms beekeeper standing near hives" class="h-[34rem] w-full rounded-lg object-cover object-top shadow-lift" widths={[560, 760, 960]} />
+              <div class="absolute bottom-5 left-5 rounded-lg bg-white/92 p-5 shadow-soft backdrop-blur">
+                <p class="font-display text-4xl font-normal tracking-wide text-earth-900">10 Years</p>
+                <p class="mt-1 text-sm font-extrabold text-earth-600">Hands-on beekeeping experience</p>
+              </div>
             </div>
-            <div class="space-y-4">
-              {process.map((item) => (
-                <div class="flex gap-4 rounded-lg bg-earth-50 p-4 shadow-soft">
-                  <span class="mt-1 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-field-600 text-white">
-                    <Check class="h-4 w-4" />
-                  </span>
-                  <p class="max-w-xl text-sm font-semibold leading-6 text-earth-700">{item}</p>
+            <div>
+              <p class="font-eyebrow text-4xl text-field-600">Behind the jar</p>
+              <h2 class="mt-4 max-w-2xl font-display text-4xl font-normal leading-tight tracking-wide text-earth-900 sm:text-5xl">
+                A working apiary with a local, family-owned rhythm.
+              </h2>
+              <p class="mt-6 max-w-2xl text-lg leading-8 text-earth-600">
+                Janway’s Raw Honey is family-owned and operated by Josh Janway in East Baton Rouge Parish. The work starts with careful hive checks, sustainable farming practices, and a commitment to harvesting honey without processing or filtering away its natural character.
+              </p>
+              <div class="mt-8 grid gap-4 sm:grid-cols-3">
+                <div class="rounded-lg bg-earth-50 p-5 shadow-soft">
+                  <p class="font-display text-3xl font-normal tracking-wide text-honey-700">Raw</p>
+                  <p class="mt-2 text-sm font-semibold leading-6 text-earth-600">Unprocessed and unfiltered from local hives.</p>
                 </div>
-              ))}
+                <div class="rounded-lg bg-earth-50 p-5 shadow-soft">
+                  <p class="font-display text-3xl font-normal tracking-wide text-honey-700">Local</p>
+                  <p class="mt-2 text-sm font-semibold leading-6 text-earth-600">Harvested around Baton Rouge and nearby parishes.</p>
+                </div>
+                <div class="rounded-lg bg-earth-50 p-5 shadow-soft">
+                  <p class="font-display text-3xl font-normal tracking-wide text-honey-700">Steady</p>
+                  <p class="mt-2 text-sm font-semibold leading-6 text-earth-600">Built on seasonal care and pollination expertise.</p>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="mt-12 grid gap-5 md:grid-cols-3">
-            <Image src={beekeeper} alt="Janway Farms beekeeper standing near hives" class="h-96 w-full rounded-lg object-cover shadow-lift md:col-span-1" widths={[480, 720]} />
-            <Image src={hivesSmoke} alt="Bees and hive boxes during beekeeping work" class="h-96 w-full rounded-lg object-cover shadow-lift md:col-span-1" widths={[480, 720]} />
-            <Image src={beesCloseup} alt="Close up of bees inside a hive" class="h-96 w-full rounded-lg object-cover shadow-lift md:col-span-1" widths={[480, 720]} />
+          <div class="mt-8 grid gap-5 md:grid-cols-2">
+            <Image src={hivesSmoke} alt="Bees and hive boxes during beekeeping work" class="h-80 w-full rounded-lg object-cover shadow-lift" widths={[560, 760]} />
+            <Image src={beesCloseup} alt="Close up of bees inside a hive" class="h-80 w-full rounded-lg object-cover shadow-lift" widths={[560, 760]} />
           </div>
         </div>
       </section>
 
-      <section id="visit" class="bg-field-900 py-24 text-white sm:py-28">
+      <section id="visit" class="relative overflow-hidden bg-field-900 py-24 text-white sm:py-28">
         <div class="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[.95fr_1.05fr] lg:items-center">
           <div>
-            <p class="text-sm font-extrabold uppercase tracking-[0.18em] text-honey-300">Sunflower season</p>
-            <h2 class="mt-4 max-w-xl font-display text-4xl font-bold leading-tight sm:text-5xl">
-              Keep the farm experience simple, seasonal, and easy to act on.
+            <p class="font-eyebrow text-4xl text-honey-300">Sunflower season</p>
+            <h2 class="mt-4 max-w-xl font-display text-4xl font-normal leading-tight tracking-wide sm:text-5xl">
+              Seasonal color, local honey, and a reason to slow down.
             </h2>
             <p class="mt-5 max-w-xl text-lg leading-8 text-field-100">
-              A strong homepage does not need every future page. It needs obvious next steps for honey pickup, field updates, and contact.
+              When the sunflowers are in bloom, Janway Farms becomes a bright reminder of the same pollination work that supports the hives, local crops, and the honey harvest.
             </p>
             <div class="mt-8 grid gap-4 sm:grid-cols-2">
               <div class="rounded-lg bg-white/10 p-5 shadow-soft ring-1 ring-white/10">
                 <Leaf class="h-6 w-6 text-honey-300" />
-                <p class="mt-4 text-lg font-extrabold">Field updates</p>
-                <p class="mt-2 text-sm leading-6 text-field-100">Use this section for bloom dates and visit availability.</p>
+                <p class="mt-4 text-lg font-extrabold">Seasonal Updates</p>
+                <p class="mt-2 text-sm leading-6 text-field-100">Follow bloom timing, harvest notes, and farm announcements as the season changes.</p>
               </div>
               <div class="rounded-lg bg-white/10 p-5 shadow-soft ring-1 ring-white/10">
                 <Star class="h-6 w-6 text-honey-300" />
-                <p class="mt-4 text-lg font-extrabold">Farm gifts</p>
-                <p class="mt-2 text-sm leading-6 text-field-100">Bundle honey with a simple message for local pickup.</p>
+                <p class="mt-4 text-lg font-extrabold">Local Flavor</p>
+                <p class="mt-2 text-sm leading-6 text-field-100">Raw honey carries the character of Baton Rouge blooms and surrounding parish forage.</p>
               </div>
             </div>
           </div>
@@ -247,57 +264,64 @@ const process = [
         </div>
       </section>
 
-      <section id="order" class="bg-earth-50 py-24 sm:py-28">
-        <div class="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[.9fr_1.1fr]">
-          <div>
-            <p class="text-sm font-extrabold uppercase tracking-[0.18em] text-honey-700">Order pickup</p>
-            <h2 class="mt-4 max-w-xl font-display text-4xl font-bold leading-tight text-earth-900 sm:text-5xl">
-              Ask what is available this week.
-            </h2>
-            <p class="mt-5 max-w-xl text-lg leading-8 text-earth-600">
-              This Netlify-ready form keeps the first release functional without adding a storefront before inventory details are confirmed.
-            </p>
-            <div class="mt-8 space-y-4 text-sm font-semibold text-earth-700">
-              <p class="flex items-center gap-3"><MapPin class="h-5 w-5 text-field-600" /> Local farm pickup</p>
-              <p class="flex items-center gap-3"><Mail class="h-5 w-5 text-field-600" /> Direct availability request</p>
-              <p class="flex items-center gap-3"><Phone class="h-5 w-5 text-field-600" /> Add phone follow-up when ready</p>
+      <section id="where-to-buy" class="relative overflow-hidden bg-white py-24 sm:py-28">
+        <Image src={bee4} alt="" aria-hidden="true" class="pointer-events-none absolute -bottom-16 -right-20 w-96 opacity-[0.06]" widths={[420, 620]} />
+        <div class="mx-auto max-w-7xl px-5 sm:px-8">
+          <div class="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-start">
+            <div>
+              <p class="font-eyebrow text-4xl text-honey-700">Where to buy</p>
+              <h2 class="mt-4 max-w-xl font-display text-4xl font-normal leading-tight tracking-wide text-earth-900 sm:text-5xl">
+                Find Janway’s Raw Honey at Baton Rouge area retailers.
+              </h2>
+              <p class="mt-5 max-w-xl text-lg leading-8 text-earth-600">
+                Thank you for shopping local and supporting a family business rooted in East Baton Rouge Parish.
+              </p>
+            </div>
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {retailLocations.map((location) => (
+                <div class="rounded-lg bg-earth-50 p-5 shadow-soft transition hover:-translate-y-1 hover:bg-honey-50 hover:shadow-lift">
+                  <Store class="h-5 w-5 text-honey-700" />
+                  <p class="mt-4 text-lg font-extrabold text-earth-900">{location}</p>
+                  <p class="mt-2 text-sm font-semibold leading-6 text-earth-500">Local retail partner</p>
+                </div>
+              ))}
             </div>
           </div>
-          <form name="pickup-request" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="rounded-lg bg-white p-6 shadow-lift sm:p-8">
-            <input type="hidden" name="form-name" value="pickup-request" />
-            <p class="hidden">
-              <label>Do not fill this out: <input name="bot-field" /></label>
-            </p>
-            <div class="grid gap-5 sm:grid-cols-2">
-              <label class="block">
-                <span class="text-xs font-extrabold uppercase tracking-[0.14em] text-earth-500">Name</span>
-                <input required name="name" class="mt-2 w-full rounded-md bg-earth-50 px-4 py-3 text-earth-900 shadow-inner outline-none ring-2 ring-transparent transition focus:bg-white focus:ring-honey-300" />
-              </label>
-              <label class="block">
-                <span class="text-xs font-extrabold uppercase tracking-[0.14em] text-earth-500">Email</span>
-                <input required type="email" name="email" class="mt-2 w-full rounded-md bg-earth-50 px-4 py-3 text-earth-900 shadow-inner outline-none ring-2 ring-transparent transition focus:bg-white focus:ring-honey-300" />
-              </label>
-              <label class="block sm:col-span-2">
-                <span class="text-xs font-extrabold uppercase tracking-[0.14em] text-earth-500">What are you interested in?</span>
-                <select name="interest" class="mt-2 w-full rounded-md bg-earth-50 px-4 py-3 text-earth-900 shadow-inner outline-none ring-2 ring-transparent transition focus:bg-white focus:ring-honey-300">
-                  <option>Raw honey jars</option>
-                  <option>Gift bundle</option>
-                  <option>Sunflower visit updates</option>
-                  <option>Wholesale or event request</option>
-                </select>
-              </label>
-              <label class="block sm:col-span-2">
-                <span class="text-xs font-extrabold uppercase tracking-[0.14em] text-earth-500">Message</span>
-                <textarea required name="message" rows="5" class="mt-2 w-full rounded-md bg-earth-50 px-4 py-3 text-earth-900 shadow-inner outline-none ring-2 ring-transparent transition focus:bg-white focus:ring-honey-300" placeholder="Tell us what size, quantity, or timing you have in mind."></textarea>
-              </label>
-            </div>
-            <button type="submit" class="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-earth-900 px-6 py-3.5 text-sm font-extrabold text-white shadow-soft transition hover:bg-earth-800 sm:w-auto">
-              Send request
-              <ArrowRight class="h-4 w-4" />
-            </button>
-          </form>
         </div>
       </section>
+
+      <footer class="relative overflow-hidden bg-[hsl(22_58%_16%)] py-12 text-honey-50">
+        <Image src={bee} alt="" aria-hidden="true" class="pointer-events-none absolute -bottom-28 -right-16 w-96 rotate-12 opacity-[0.07]" widths={[420, 620]} />
+        <div class="relative mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 md:grid-cols-[1.1fr_.9fr_.9fr]">
+          <div>
+            <a href="#top" class="inline-flex items-center gap-3">
+              <Image src={logo} alt="Janway Farms raw honey logo" class="h-16 w-16 object-contain" widths={[128]} />
+              <span class="font-display text-2xl font-normal tracking-wide text-honey-50">Janway Farms</span>
+            </a>
+            <p class="mt-5 max-w-md text-sm leading-6 text-honey-100/80">
+              Family-owned Baton Rouge apiary producing 100% raw, unprocessed, unfiltered honey from local hives.
+            </p>
+          </div>
+          <div>
+            <p class="font-eyebrow text-3xl text-honey-300">Contact</p>
+            <div class="mt-5 space-y-3 text-sm font-semibold text-honey-100/85">
+              <p class="flex items-start gap-3"><MapPin class="mt-0.5 h-4 w-4 shrink-0 text-honey-300" /> 13738 Mary Edith Pl, Baton Rouge, LA 70809-5507</p>
+              <p class="flex items-start gap-3"><Mail class="mt-0.5 h-4 w-4 shrink-0 text-honey-300" /> Find Janway’s honey through local retail partners.</p>
+            </div>
+          </div>
+          <div>
+            <p class="font-eyebrow text-3xl text-honey-300">Honey</p>
+            <div class="mt-5 space-y-3 text-sm font-semibold text-honey-100/85">
+              <a class="block hover:text-honey-200" href="#honey">What we make</a>
+              <a class="block hover:text-honey-200" href="#farm">Meet the farm</a>
+              <a class="block hover:text-honey-200" href="#where-to-buy">Where To Buy</a>
+            </div>
+          </div>
+        </div>
+        <div class="relative mx-auto mt-10 max-w-7xl px-5 text-sm font-semibold text-honey-100/45 sm:px-8">
+          © 2026 Janway Farms LLC. Thank you for shopping local.
+        </div>
+      </footer>
     </main>
   </body>
 </html>

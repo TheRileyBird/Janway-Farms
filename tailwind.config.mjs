@@ -47,7 +47,8 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        display: ['Fraunces', 'Georgia', 'serif'],
+        display: ['Anton', 'Impact', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        eyebrow: ['Playlist', 'Playlist Script', 'Playball', 'cursive'],
       },
     },
   },
