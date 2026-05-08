@@ -1,0 +1,303 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import {
+  ArrowRight,
+  Check,
+  ChevronDown,
+  Flower2,
+  HeartHandshake,
+  Leaf,
+  Mail,
+  MapPin,
+  Menu,
+  PackageCheck,
+  Phone,
+  Sprout,
+  Star,
+  X,
+} from '@lucide/astro';
+import logo from '../assets/images/logo.png';
+import honeyJars from '../assets/images/honey-jars.jpg';
+import sunflowers from '../assets/images/sunflowers.jpg';
+import beekeeper from '../assets/images/beekeeper.jpg';
+import beesCloseup from '../assets/images/bees-closeup.jpg';
+import honeyFood from '../assets/images/honey-food.jpg';
+import hivesSmoke from '../assets/images/hives-smoke.jpg';
+import honeyBottle from '../assets/images/honey-bottle.png';
+
+const process = [
+  'Hive care follows the season, not a factory schedule.',
+  'Honey is handled in small batches for clear flavor and texture.',
+  'Local pickup requests go straight to the farm through Netlify Forms.',
+];
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth bg-earth-50">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Janway Farms offers raw local honey, sunflower field experiences, and farm-made gifts." />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,650;9..144,750&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <title>Janway Farms</title>
+    <style>[x-cloak]{display:none!important}</style>
+  </head>
+  <body class="min-h-screen font-sans text-earth-900 antialiased">
+    <main
+      x-data="{ menuOpen: false, selected: 'Raw Honey', scrolled: false }"
+      x-on:scroll.window="scrolled = window.scrollY > 20"
+      class="overflow-hidden"
+    >
+      <header
+        class="fixed inset-x-0 top-0 z-50 transition"
+        x-bind:class="scrolled ? 'bg-earth-50/92 shadow-soft backdrop-blur' : 'bg-transparent'"
+      >
+        <nav class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
+          <a href="#top" class="flex items-center gap-3">
+            <Image src={logo} alt="Janway Farms raw honey logo" class="h-14 w-14 object-contain" widths={[112]} />
+            <span class="font-display text-xl font-bold text-earth-900">Janway Farms</span>
+          </a>
+          <div class="hidden items-center gap-8 text-sm font-semibold text-earth-600 md:flex">
+            <a class="hover:text-earth-900" href="#honey">Honey</a>
+            <a class="hover:text-earth-900" href="#farm">The Farm</a>
+            <a class="hover:text-earth-900" href="#visit">Visit</a>
+            <a class="rounded-full bg-earth-900 px-5 py-2.5 text-earth-50 shadow-soft transition hover:bg-earth-800" href="#order">Order pickup</a>
+          </div>
+          <button
+            type="button"
+            class="grid h-11 w-11 place-items-center rounded-full bg-white/85 text-earth-900 shadow-soft md:hidden"
+            x-on:click="menuOpen = !menuOpen"
+            aria-label="Toggle navigation"
+          >
+            <Menu x-show="!menuOpen" class="h-5 w-5" />
+            <X x-show="menuOpen" x-cloak class="h-5 w-5" />
+          </button>
+        </nav>
+        <div x-show="menuOpen" x-transition x-cloak class="mx-5 mb-4 rounded-lg bg-white p-3 text-sm font-semibold text-earth-700 shadow-lift md:hidden">
+          <a class="block rounded-md px-4 py-3 hover:bg-earth-100" href="#honey" x-on:click="menuOpen = false">Honey</a>
+          <a class="block rounded-md px-4 py-3 hover:bg-earth-100" href="#farm" x-on:click="menuOpen = false">The Farm</a>
+          <a class="block rounded-md px-4 py-3 hover:bg-earth-100" href="#visit" x-on:click="menuOpen = false">Visit</a>
+          <a class="block rounded-md bg-honey-400 px-4 py-3 text-earth-900" href="#order" x-on:click="menuOpen = false">Order pickup</a>
+        </div>
+      </header>
+
+      <section id="top" class="relative min-h-[92vh] bg-earth-900 pt-28 text-white sm:pt-32">
+        <Image src={sunflowers} alt="Sunflower field at sunset" class="absolute inset-0 h-full w-full object-cover opacity-65" widths={[720, 1080, 1440, 1920]} loading="eager" />
+        <div class="absolute inset-0 bg-gradient-to-r from-earth-900 via-earth-900/72 to-earth-900/20"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,hsl(39_93%_55%/.22),transparent_28%),radial-gradient(circle_at_72%_14%,hsl(93_39%_36%/.24),transparent_24%)]"></div>
+        <div class="relative mx-auto grid max-w-7xl gap-12 px-5 pb-16 sm:px-8 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
+          <div class="max-w-2xl">
+            <p class="mb-5 inline-flex items-center gap-2 rounded-full bg-white/12 px-4 py-2 text-sm font-semibold text-honey-100 shadow-soft ring-1 ring-white/12 backdrop-blur">
+              <Sprout class="h-4 w-4" />
+              From hive to home
+            </p>
+            <h1 class="font-display text-5xl font-bold leading-[0.96] text-white sm:text-6xl lg:text-7xl">
+              Janway Farms raw honey, grown close to home.
+            </h1>
+            <p class="mt-6 max-w-xl text-lg leading-8 text-earth-100">
+              Small-batch raw honey, seasonal sunflower fields, and simple farm gifts from a family-run beekeeping operation.
+            </p>
+            <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+              <a href="#order" class="inline-flex items-center justify-center gap-2 rounded-full bg-honey-400 px-6 py-3.5 text-sm font-extrabold text-earth-950 shadow-lift transition hover:bg-honey-300">
+                Request local pickup
+                <ArrowRight class="h-4 w-4" />
+              </a>
+              <a href="#farm" class="inline-flex items-center justify-center gap-2 rounded-full bg-white/12 px-6 py-3.5 text-sm font-bold text-white ring-1 ring-white/15 backdrop-blur transition hover:bg-white/18">
+                See the farm
+                <ChevronDown class="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+          <div class="relative mx-auto w-full max-w-md translate-y-8 opacity-0 transition duration-700 lg:max-w-lg" x-intersect="$el.classList.add('translate-y-0','opacity-100')">
+            <div class="absolute -left-8 top-8 h-28 w-28 rounded-full bg-honey-300/30 blur-2xl"></div>
+            <div class="relative rounded-lg bg-white/10 p-4 shadow-lift ring-1 ring-white/12 backdrop-blur">
+              <Image src={honeyJars} alt="Janway Farms raw honey jars" class="aspect-[4/3] w-full rounded-md object-cover" widths={[480, 720, 960]} loading="eager" />
+              <div class="mt-4 grid grid-cols-3 gap-3 text-center">
+                <div class="rounded-md bg-white/12 p-3">
+                  <p class="text-2xl font-extrabold text-honey-200">Raw</p>
+                  <p class="mt-1 text-xs font-semibold text-earth-100">Unfiltered flavor</p>
+                </div>
+                <div class="rounded-md bg-white/12 p-3">
+                  <p class="text-2xl font-extrabold text-honey-200">Local</p>
+                  <p class="mt-1 text-xs font-semibold text-earth-100">Farm handled</p>
+                </div>
+                <div class="rounded-md bg-white/12 p-3">
+                  <p class="text-2xl font-extrabold text-honey-200">Gift</p>
+                  <p class="mt-1 text-xs font-semibold text-earth-100">Ready jars</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="honey" class="relative bg-earth-50 py-24 sm:py-28">
+        <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-earth-900/10 to-transparent"></div>
+        <div class="mx-auto grid max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
+          <div class="relative">
+            <div class="absolute inset-x-8 bottom-0 h-24 rounded-full bg-honey-300/35 blur-3xl"></div>
+            <Image src={honeyBottle} alt="Bottle of Janway Farms honey" class="relative mx-auto max-h-[520px] w-auto object-contain drop-shadow-2xl" widths={[320, 540]} />
+          </div>
+          <div>
+            <p class="text-sm font-extrabold uppercase tracking-[0.18em] text-honey-700">What we make</p>
+            <h2 class="mt-4 max-w-2xl font-display text-4xl font-bold leading-tight text-earth-900 sm:text-5xl">
+              Honey is the product. Stewardship is the process.
+            </h2>
+            <p class="mt-5 max-w-2xl text-lg leading-8 text-earth-600">
+              The homepage leads with the jar because that is the clearest customer action: find honey, learn the story, request pickup.
+            </p>
+            <div class="mt-9 grid gap-4 sm:grid-cols-3">
+              <button
+                type="button"
+                x-on:click="selected = 'Raw Honey'"
+                x-bind:class="selected === 'Raw Honey' ? 'bg-white shadow-lift ring-honey-300' : 'bg-earth-100/70 hover:bg-white shadow-soft ring-transparent'"
+                class="rounded-lg p-5 text-left ring-2 transition"
+              >
+                <span class="grid h-11 w-11 place-items-center rounded-full bg-honey-100 text-honey-700">
+                  <PackageCheck class="h-5 w-5" />
+                </span>
+                <span class="mt-4 block text-base font-extrabold text-earth-900">Raw Honey</span>
+                <span class="mt-2 block text-sm leading-6 text-earth-600">Small-batch jars with the rich, floral flavor of local blooms.</span>
+              </button>
+              <button
+                type="button"
+                x-on:click="selected = 'Sunflower Days'"
+                x-bind:class="selected === 'Sunflower Days' ? 'bg-white shadow-lift ring-honey-300' : 'bg-earth-100/70 hover:bg-white shadow-soft ring-transparent'"
+                class="rounded-lg p-5 text-left ring-2 transition"
+              >
+                <span class="grid h-11 w-11 place-items-center rounded-full bg-honey-100 text-honey-700">
+                  <Flower2 class="h-5 w-5" />
+                </span>
+                <span class="mt-4 block text-base font-extrabold text-earth-900">Sunflower Days</span>
+                <span class="mt-2 block text-sm leading-6 text-earth-600">Seasonal field visits, photo moments, and farm-grown color.</span>
+              </button>
+              <button
+                type="button"
+                x-on:click="selected = 'Farm Gifts'"
+                x-bind:class="selected === 'Farm Gifts' ? 'bg-white shadow-lift ring-honey-300' : 'bg-earth-100/70 hover:bg-white shadow-soft ring-transparent'"
+                class="rounded-lg p-5 text-left ring-2 transition"
+              >
+                <span class="grid h-11 w-11 place-items-center rounded-full bg-honey-100 text-honey-700">
+                  <HeartHandshake class="h-5 w-5" />
+                </span>
+                <span class="mt-4 block text-base font-extrabold text-earth-900">Farm Gifts</span>
+                <span class="mt-2 block text-sm leading-6 text-earth-600">Simple bundles for hosts, neighbors, teachers, and clients.</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="farm" class="bg-white py-24 sm:py-28">
+        <div class="mx-auto max-w-7xl px-5 sm:px-8">
+          <div class="grid gap-10 lg:grid-cols-[1.05fr_.95fr] lg:items-end">
+            <div>
+              <p class="text-sm font-extrabold uppercase tracking-[0.18em] text-field-600">Behind the jar</p>
+              <h2 class="mt-4 max-w-2xl font-display text-4xl font-bold leading-tight text-earth-900 sm:text-5xl">
+                A working apiary, a seasonal field, and a more personal way to buy honey.
+              </h2>
+            </div>
+            <div class="space-y-4">
+              {process.map((item) => (
+                <div class="flex gap-4 rounded-lg bg-earth-50 p-4 shadow-soft">
+                  <span class="mt-1 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-field-600 text-white">
+                    <Check class="h-4 w-4" />
+                  </span>
+                  <p class="max-w-xl text-sm font-semibold leading-6 text-earth-700">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div class="mt-12 grid gap-5 md:grid-cols-3">
+            <Image src={beekeeper} alt="Janway Farms beekeeper standing near hives" class="h-96 w-full rounded-lg object-cover shadow-lift md:col-span-1" widths={[480, 720]} />
+            <Image src={hivesSmoke} alt="Bees and hive boxes during beekeeping work" class="h-96 w-full rounded-lg object-cover shadow-lift md:col-span-1" widths={[480, 720]} />
+            <Image src={beesCloseup} alt="Close up of bees inside a hive" class="h-96 w-full rounded-lg object-cover shadow-lift md:col-span-1" widths={[480, 720]} />
+          </div>
+        </div>
+      </section>
+
+      <section id="visit" class="bg-field-900 py-24 text-white sm:py-28">
+        <div class="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[.95fr_1.05fr] lg:items-center">
+          <div>
+            <p class="text-sm font-extrabold uppercase tracking-[0.18em] text-honey-300">Sunflower season</p>
+            <h2 class="mt-4 max-w-xl font-display text-4xl font-bold leading-tight sm:text-5xl">
+              Keep the farm experience simple, seasonal, and easy to act on.
+            </h2>
+            <p class="mt-5 max-w-xl text-lg leading-8 text-field-100">
+              A strong homepage does not need every future page. It needs obvious next steps for honey pickup, field updates, and contact.
+            </p>
+            <div class="mt-8 grid gap-4 sm:grid-cols-2">
+              <div class="rounded-lg bg-white/10 p-5 shadow-soft ring-1 ring-white/10">
+                <Leaf class="h-6 w-6 text-honey-300" />
+                <p class="mt-4 text-lg font-extrabold">Field updates</p>
+                <p class="mt-2 text-sm leading-6 text-field-100">Use this section for bloom dates and visit availability.</p>
+              </div>
+              <div class="rounded-lg bg-white/10 p-5 shadow-soft ring-1 ring-white/10">
+                <Star class="h-6 w-6 text-honey-300" />
+                <p class="mt-4 text-lg font-extrabold">Farm gifts</p>
+                <p class="mt-2 text-sm leading-6 text-field-100">Bundle honey with a simple message for local pickup.</p>
+              </div>
+            </div>
+          </div>
+          <Image src={honeyFood} alt="Honey drizzled over breakfast jar" class="h-[520px] w-full rounded-lg object-cover shadow-lift" widths={[720, 960, 1200]} />
+        </div>
+      </section>
+
+      <section id="order" class="bg-earth-50 py-24 sm:py-28">
+        <div class="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[.9fr_1.1fr]">
+          <div>
+            <p class="text-sm font-extrabold uppercase tracking-[0.18em] text-honey-700">Order pickup</p>
+            <h2 class="mt-4 max-w-xl font-display text-4xl font-bold leading-tight text-earth-900 sm:text-5xl">
+              Ask what is available this week.
+            </h2>
+            <p class="mt-5 max-w-xl text-lg leading-8 text-earth-600">
+              This Netlify-ready form keeps the first release functional without adding a storefront before inventory details are confirmed.
+            </p>
+            <div class="mt-8 space-y-4 text-sm font-semibold text-earth-700">
+              <p class="flex items-center gap-3"><MapPin class="h-5 w-5 text-field-600" /> Local farm pickup</p>
+              <p class="flex items-center gap-3"><Mail class="h-5 w-5 text-field-600" /> Direct availability request</p>
+              <p class="flex items-center gap-3"><Phone class="h-5 w-5 text-field-600" /> Add phone follow-up when ready</p>
+            </div>
+          </div>
+          <form name="pickup-request" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="rounded-lg bg-white p-6 shadow-lift sm:p-8">
+            <input type="hidden" name="form-name" value="pickup-request" />
+            <p class="hidden">
+              <label>Do not fill this out: <input name="bot-field" /></label>
+            </p>
+            <div class="grid gap-5 sm:grid-cols-2">
+              <label class="block">
+                <span class="text-xs font-extrabold uppercase tracking-[0.14em] text-earth-500">Name</span>
+                <input required name="name" class="mt-2 w-full rounded-md bg-earth-50 px-4 py-3 text-earth-900 shadow-inner outline-none ring-2 ring-transparent transition focus:bg-white focus:ring-honey-300" />
+              </label>
+              <label class="block">
+                <span class="text-xs font-extrabold uppercase tracking-[0.14em] text-earth-500">Email</span>
+                <input required type="email" name="email" class="mt-2 w-full rounded-md bg-earth-50 px-4 py-3 text-earth-900 shadow-inner outline-none ring-2 ring-transparent transition focus:bg-white focus:ring-honey-300" />
+              </label>
+              <label class="block sm:col-span-2">
+                <span class="text-xs font-extrabold uppercase tracking-[0.14em] text-earth-500">What are you interested in?</span>
+                <select name="interest" class="mt-2 w-full rounded-md bg-earth-50 px-4 py-3 text-earth-900 shadow-inner outline-none ring-2 ring-transparent transition focus:bg-white focus:ring-honey-300">
+                  <option>Raw honey jars</option>
+                  <option>Gift bundle</option>
+                  <option>Sunflower visit updates</option>
+                  <option>Wholesale or event request</option>
+                </select>
+              </label>
+              <label class="block sm:col-span-2">
+                <span class="text-xs font-extrabold uppercase tracking-[0.14em] text-earth-500">Message</span>
+                <textarea required name="message" rows="5" class="mt-2 w-full rounded-md bg-earth-50 px-4 py-3 text-earth-900 shadow-inner outline-none ring-2 ring-transparent transition focus:bg-white focus:ring-honey-300" placeholder="Tell us what size, quantity, or timing you have in mind."></textarea>
+              </label>
+            </div>
+            <button type="submit" class="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-earth-900 px-6 py-3.5 text-sm font-extrabold text-white shadow-soft transition hover:bg-earth-800 sm:w-auto">
+              Send request
+              <ArrowRight class="h-4 w-4" />
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
