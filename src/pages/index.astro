@@ -73,8 +73,10 @@ const retailLocations = ['Rouse’s', 'Oak Point', 'Southside Produce', 'The Fre
         top: 0;
         left: 0;
         right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, transparent, hsl(35 92% 46%) 30%, oklch(72% 0.17 68) 60%, transparent);
+        height: 4px;
+        background: linear-gradient(90deg, transparent 0%, hsl(35 92% 46% / 0.15) 12%, hsl(35 92% 46%) 32%, hsl(42 94% 62%) 60%, hsl(35 92% 46% / 0.12) 86%, transparent 100%);
+        box-shadow: 0 1px 18px hsl(35 92% 46% / 0.18);
+        z-index: 30;
       }
 
       @keyframes bottleGlowPulse {
@@ -106,6 +108,13 @@ const retailLocations = ['Rouse’s', 'Oak Point', 'Southside Produce', 'The Fre
         .bottle-beam-pulse {
           animation: none;
         }
+      }
+
+      .media-video {
+        display: block;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
       }
     </style>
   </head>
@@ -160,7 +169,7 @@ const retailLocations = ['Rouse’s', 'Oak Point', 'Southside Produce', 'The Fre
             <h1 class="font-display text-[clamp(46px,6.2vw,86px)] font-normal leading-[0.94] tracking-normal text-white">
               Janway Farms raw honey, grown <span class="text-honey-500">close</span> to home.
             </h1>
-            <p class="mt-6 max-w-xl text-lg leading-8 text-earth-100">
+            <p class="mt-6 max-w-xl text-lg  text-earth-100">
               Small-batch raw honey, seasonal sunflower fields, and simple farm gifts from a family-run beekeeping operation in Baton Rouge.
             </p>
             <!--<div class="mt-9 flex flex-col gap-3 sm:flex-row">-->
@@ -204,14 +213,19 @@ const retailLocations = ['Rouse’s', 'Oak Point', 'Southside Produce', 'The Fre
         <div class="mx-auto grid max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
           <div class="relative">
             <div class="absolute inset-x-8 bottom-0 h-24 rounded-full bg-honey-300/35 blur-3xl"></div>
-            <Image src={hivesSmoke} alt="Bees and hive boxes during beekeeping work" class="relative h-[520px] w-full rounded-lg object-cover shadow-lift" widths={[560, 760, 960]} />
+            <div class="relative h-[520px] overflow-hidden rounded-lg shadow-lift">
+              <video class="media-video" autoplay muted loop playsinline preload="metadata" poster={hivesSmoke.src}>
+                <source src="https://cdn.pixabay.com/video/2021/06/23/78680-566794352_large.mp4" type="video/mp4" />
+              </video>
+              <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-earth-900/20 to-transparent"></div>
+            </div>
           </div>
           <div>
             <p class="font-eyebrow text-4xl text-honey-700">What we make</p>
             <h2 class="mt-4 max-w-2xl font-display text-4xl font-normal leading-tight tracking-wide text-earth-900 sm:text-5xl">
               Honey is the product. Stewardship is the process.
             </h2>
-            <p class="mt-5 max-w-2xl text-lg leading-8 text-earth-600">
+            <p class="mt-5 max-w-2xl text-lg  text-earth-600">
               Janway’s Raw Honey is harvested from our own hives around Baton Rouge and bottled without processing, filtering, or shortcuts.
             </p>
             <div class="group mt-9 grid gap-4 sm:grid-cols-3">
@@ -256,40 +270,29 @@ const retailLocations = ['Rouse’s', 'Oak Point', 'Southside Produce', 'The Fre
         </div>
       </section>
 
-      <section id="farm" class="sec-farm relative overflow-hidden bg-white py-24 sm:py-28">
-        <Image src={bee3} alt="" aria-hidden="true" class="pointer-events-none absolute -left-24 top-8 w-96 opacity-[0.06]" widths={[420, 620]} />
-        <div class="mx-auto max-w-7xl px-5 sm:px-8">
-          <div class="grid gap-12 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
-            <div class="relative">
-              <Image src={beekeeper} alt="Janway Farms beekeeper standing near hives" class="h-[34rem] w-full rounded-lg object-cover object-top shadow-lift" widths={[560, 760, 960]} />
-              <div class="absolute bottom-5 left-5 rounded-lg bg-white/92 p-5 shadow-soft backdrop-blur">
-                <p class="font-display text-4xl font-normal tracking-wide text-earth-900">10 Years</p>
-                <p class="mt-1 text-sm font-extrabold text-earth-600">Hands-on beekeeping experience</p>
-              </div>
-            </div>
-            <div>
-              <p class="font-eyebrow text-4xl text-field-600">Behind the jar</p>
-              <h2 class="mt-4 max-w-2xl font-display text-4xl font-normal leading-tight tracking-wide text-earth-900 sm:text-5xl">
-                A working apiary with a local, family-owned rhythm.
+      <section id="farm" class="sec-farm relative overflow-hidden bg-honey-100 py-0">
+        <Image src={bee3} alt="" aria-hidden="true" class="pointer-events-none absolute bottom-20 left-5 z-10 w-96 -scale-x-100 opacity-[0.06]" widths={[420, 620]} />
+        <div class="relative grid min-h-[620px] w-full lg:grid-cols-[.54fr_.46fr]">
+          <div class="relative z-10 flex items-center px-5 py-24 sm:px-8 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] lg:pr-8">
+            <div class="max-w-2xl lg:ml-auto lg:max-w-xl">
+              <p class="font-eyebrow text-4xl text-honey-700">Behind the jar</p>
+              <h2 class="mt-4 max-w-xl font-display text-4xl font-normal leading-tight tracking-wide text-earth-900 sm:text-5xl">
+                Our mission is simple: care for the bees, harvest honest honey, and support the local community.
               </h2>
-              <p class="mt-6 max-w-2xl text-lg leading-8 text-earth-600">
-                Janway’s Raw Honey is family-owned and operated by Josh Janway in East Baton Rouge Parish. The work starts with careful hive checks, sustainable farming practices, and a commitment to harvesting honey without processing or filtering away its natural character.
+              <p class="mt-6 max-w-xl text-lg  text-earth-700">
+                Janway’s Raw Honey is family-owned and operated by Josh Janway in East Baton Rouge Parish. Every jar starts with careful hive checks, sustainable farming practices, and a commitment to keeping honey raw, unprocessed, and unfiltered.
               </p>
-              <div class="mt-8 grid gap-4 sm:grid-cols-3">
-                <div class="rounded-lg bg-earth-50 p-5 shadow-soft">
-                  <p class="font-display text-3xl font-normal tracking-wide text-honey-700">Raw</p>
-                  <p class="mt-2 text-sm font-semibold leading-6 text-earth-600">Unprocessed and unfiltered from local hives.</p>
-                </div>
-                <div class="rounded-lg bg-earth-50 p-5 shadow-soft">
-                  <p class="font-display text-3xl font-normal tracking-wide text-honey-700">Local</p>
-                  <p class="mt-2 text-sm font-semibold leading-6 text-earth-600">Harvested around Baton Rouge and nearby parishes.</p>
-                </div>
-                <div class="rounded-lg bg-earth-50 p-5 shadow-soft">
-                  <p class="font-display text-3xl font-normal tracking-wide text-honey-700">Steady</p>
-                  <p class="mt-2 text-sm font-semibold leading-6 text-earth-600">Built on seasonal care and pollination expertise.</p>
-                </div>
+              <div class="mt-8 flex flex-wrap gap-3">
+                <span class="inline-flex items-center rounded-lg border-2 border-honey-700/20 bg-honey-50/45 px-4 py-3 text-sm font-extrabold text-earth-800 shadow-soft">100% Raw</span>
+                <span class="inline-flex items-center rounded-lg border-2 border-honey-700/20 bg-honey-50/45 px-4 py-3 text-sm font-extrabold text-earth-800 shadow-soft">Family-Owned</span>
+                <span class="inline-flex items-center rounded-lg border-2 border-honey-700/20 bg-honey-50/45 px-4 py-3 text-sm font-extrabold text-earth-800 shadow-soft">Sustainable Care</span>
               </div>
             </div>
+          </div>
+          <div class="relative min-h-[420px] lg:min-h-[620px]">
+            <Image src={beekeeper} alt="Janway Farms beekeeper standing near hives" class="absolute inset-0 h-full w-full object-cover object-right" widths={[720, 960, 1280, 1600]} />
+            <div class="absolute inset-y-0 left-0 w-2/3 bg-gradient-to-r from-honey-100 via-honey-100/85 to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-honey-100/70 to-transparent lg:hidden"></div>
           </div>
         </div>
       </section>
@@ -301,7 +304,7 @@ const retailLocations = ['Rouse’s', 'Oak Point', 'Southside Produce', 'The Fre
             <h2 class="mt-4 max-w-xl font-display text-4xl font-normal leading-tight tracking-wide sm:text-5xl">
               Seasonal color, local honey, and a reason to slow down.
             </h2>
-            <p class="mt-5 max-w-xl text-lg leading-8 text-field-100">
+            <p class="mt-5 max-w-xl text-lg  text-field-100">
               When the sunflowers are in bloom, Janway Farms becomes a bright reminder of the same pollination work that supports the hives, local crops, and the honey harvest.
             </p>
             <div class="mt-8 grid gap-4 sm:grid-cols-2">
@@ -317,29 +320,34 @@ const retailLocations = ['Rouse’s', 'Oak Point', 'Southside Produce', 'The Fre
               </div>
             </div>
           </div>
-          <Image src={honeyFood} alt="Honey drizzled over breakfast jar" class="h-[520px] w-full rounded-lg object-cover shadow-lift" widths={[720, 960, 1200]} />
+          <div class="h-[520px] overflow-hidden rounded-lg shadow-lift">
+            <video class="media-video" autoplay muted loop playsinline preload="metadata" poster={sunflowers.src}>
+              <source src="https://cdn.pixabay.com/video/2021/02/19/65672-515351571_large.mp4" type="video/mp4" />
+            </video>
+          </div>
         </div>
       </section>
 
       <section id="where-to-buy" class="relative overflow-hidden bg-white py-24 sm:py-28">
         <Image src={bee4} alt="" aria-hidden="true" class="pointer-events-none absolute -bottom-16 -right-20 w-96 opacity-[0.06]" widths={[420, 620]} />
         <div class="mx-auto max-w-7xl px-5 sm:px-8">
-          <div class="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-start">
+          <div class="grid gap-12 lg:grid-cols-[.78fr_1.22fr] lg:items-start">
             <div>
               <p class="font-eyebrow text-4xl text-honey-700">Where to buy</p>
               <h2 class="mt-4 max-w-xl font-display text-4xl font-normal leading-tight tracking-wide text-earth-900 sm:text-5xl">
                 Find Janway’s Raw Honey at Baton Rouge area retailers.
               </h2>
-              <p class="mt-5 max-w-xl text-lg leading-8 text-earth-600">
+              <p class="mt-5 max-w-xl text-lg  text-earth-600">
                 Thank you for shopping local and supporting a family business rooted in East Baton Rouge Parish.
               </p>
+              <Image src={honeyFood} alt="Honey drizzled over breakfast jar" class="mt-8 h-72 w-full rounded-lg object-cover shadow-lift" widths={[520, 720]} />
             </div>
-            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="relative rounded-lg bg-earth-50 p-6 shadow-soft">
               {retailLocations.map((location) => (
-                <div class="rounded-lg bg-earth-50 p-5 shadow-soft transition hover:-translate-y-1 hover:bg-honey-50 hover:shadow-lift">
-                  <Store class="h-5 w-5 text-honey-700" />
-                  <p class="mt-4 text-lg font-extrabold text-earth-900">{location}</p>
-                  <p class="mt-2 text-sm font-semibold leading-6 text-earth-500">Local retail partner</p>
+                <div class="flex items-center gap-4 border-b border-earth-200 py-5 last:border-b-0">
+                  <span class="h-2 w-2 shrink-0 rounded-full bg-honey-500"></span>
+                  <p class="flex-1 text-lg font-extrabold text-earth-900">{location}</p>
+                  <span class="rounded-full bg-white px-3 py-1 text-[0.68rem] font-extrabold uppercase tracking-[0.08em] text-earth-500 shadow-soft">Local partner</span>
                 </div>
               ))}
             </div>
@@ -349,8 +357,8 @@ const retailLocations = ['Rouse’s', 'Oak Point', 'Southside Produce', 'The Fre
 
       <footer class="relative overflow-hidden bg-[#1C110C] py-20 text-honey-50">
         <Image src={bee} alt="" aria-hidden="true" class="pointer-events-none absolute -bottom-28 -right-16 w-96 rotate-12 opacity-[0.07]" widths={[420, 620]} />
-        <div class="relative mx-auto grid max-w-7xl gap-14 px-5 sm:px-8 md:grid-cols-[1.1fr_.9fr_.9fr]">
-          <div>
+        <div class="relative mx-auto grid max-w-7xl gap-14 px-5 sm:px-8 md:grid-cols-[1.15fr_.8fr_.65fr] lg:gap-24 xl:gap-32">
+          <div class="md:pl-8 lg:pl-20">
             <a href="#top" class="inline-flex items-center gap-3">
               <Image src={logo} alt="Janway Farms raw honey logo" class="h-16 w-16 object-contain" widths={[128]} />
               <span class="font-display text-2xl font-normal tracking-wide text-honey-50">Janway Farms</span>
@@ -359,7 +367,7 @@ const retailLocations = ['Rouse’s', 'Oak Point', 'Southside Produce', 'The Fre
               Family-owned Baton Rouge apiary producing 100% raw, unprocessed, unfiltered honey from local hives.
             </p>
           </div>
-          <div>
+          <div class="md:pl-4 lg:pl-12">
             <p class="font-eyebrow text-2xl text-honey-700">Contact</p>
             <div class="mt-6 space-y-4 text-sm font-semibold leading-6 text-honey-100/70">
               <p class="flex items-start gap-3"><MapPin class="mt-0.5 h-4 w-4 shrink-0 text-honey-300" /> 13738 Mary Edith Pl, Baton Rouge, LA 70809-5507</p>
