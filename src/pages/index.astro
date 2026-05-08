@@ -116,9 +116,40 @@ const retailLocations = ['Rouse’s Markets', 'Oak Point Fresh Market', 'Southsi
         width: 100%;
         object-fit: cover;
       }
+
+      .bee-flight-trail {
+        position: fixed;
+        inset: 0;
+        z-index: 60;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 220ms ease;
+      }
+
+      .bee-flight-trail.is-active {
+        opacity: 1;
+      }
+
+      .bee-flight-trail path {
+        fill: none;
+        stroke: hsl(35 18% 6% / 0.05);
+        stroke-width: 5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-dasharray: 14 32;
+      }
+
+      @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+        .bee-flight-trail {
+          display: none;
+        }
+      }
     </style>
   </head>
   <body class="min-h-screen font-sans text-earth-900 antialiased">
+    <svg class="bee-flight-trail" aria-hidden="true">
+      <path id="bee-flight-path" d=""></path>
+    </svg>
     <main
       x-data="{ menuOpen: false, selected: 'Raw Honey', onHero: true, updateNav() { this.onHero = window.scrollY < 24 } }"
       x-init="updateNav()"
@@ -392,5 +423,67 @@ const retailLocations = ['Rouse’s Markets', 'Oak Point Fresh Market', 'Southsi
         </div>
       </footer>
     </main>
+    <script>
+      const flightTrail = document.querySelector('.bee-flight-trail');
+      const flightPath = document.querySelector('#bee-flight-path');
+      const points = [];
+      const maxPoints = 16;
+      let rafId = 0;
+      let hideTimer = 0;
+
+      function syncTrailViewBox() {
+        flightTrail?.setAttribute('viewBox', `0 0 ${window.innerWidth || 1} ${window.innerHeight || 1}`);
+      }
+
+      function buildPath() {
+        if (!flightPath || points.length < 2) return;
+
+        let path = `M ${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`;
+
+        for (let i = 1; i < points.length - 1; i += 1) {
+          const current = points[i];
+          const next = points[i + 1];
+          const midX = (current.x + next.x) / 2;
+          const midY = (current.y + next.y) / 2;
+          path += ` Q ${current.x.toFixed(1)} ${current.y.toFixed(1)} ${midX.toFixed(1)} ${midY.toFixed(1)}`;
+        }
+
+        const last = points[points.length - 1];
+        path += ` T ${last.x.toFixed(1)} ${last.y.toFixed(1)}`;
+        flightPath.setAttribute('d', path);
+      }
+
+      function queueRender() {
+        if (rafId) return;
+        rafId = window.requestAnimationFrame(() => {
+          buildPath();
+          rafId = 0;
+        });
+      }
+
+      window.addEventListener(
+        'pointermove',
+        (event) => {
+          if (event.pointerType === 'touch') return;
+
+          points.push({ x: event.clientX, y: event.clientY });
+          if (points.length > maxPoints) points.shift();
+
+          flightTrail?.classList.add('is-active');
+          window.clearTimeout(hideTimer);
+          hideTimer = window.setTimeout(() => {
+            flightTrail?.classList.remove('is-active');
+            points.length = 0;
+            flightPath?.setAttribute('d', '');
+          }, 1600);
+
+          queueRender();
+        },
+        { passive: true },
+      );
+
+      syncTrailViewBox();
+      window.addEventListener('resize', syncTrailViewBox, { passive: true });
+    </script>
   </body>
 </html>
