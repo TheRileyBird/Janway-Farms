@@ -18,7 +18,7 @@ import {
 import logo from '../assets/images/logo.png';
 import sunflowers from '../assets/images/sunflowers.jpg';
 import beekeeper from '../assets/images/beekeeper.jpg';
-import honeyFood from '../assets/images/honey-food.jpg';
+import honeyFood from '../assets/images/honey-food-2.jpg';
 import hivesSmoke from '../assets/images/hives-smoke.jpg';
 import honeyBottle from '../assets/images/honey-bottle.png';
 import bee from '../assets/images/bee.png';
@@ -32,7 +32,7 @@ const process = [
   'Janway Farms supports Baton Rouge markets with local honey and sustainable agricultural practices.',
 ];
 
-const retailLocations = ['Rouse’s', 'Oak Point', 'Southside Produce', 'The Fresh Market', 'Hi Nabor', 'Alexander’s'];
+const retailLocations = ['Rouse’s Markets', 'Oak Point Fresh Market', 'Southside Produce', 'The Fresh Market', 'Hi Nabor Supermarket', 'Alexander’s Grocery'];
 ---
 
 <!doctype html>
@@ -136,7 +136,7 @@ const retailLocations = ['Rouse’s', 'Oak Point', 'Southside Produce', 'The Fre
             <a class="hover:text-honey-300" href="#honey">Honey</a>
             <a class="hover:text-honey-300" href="#farm">The Farm</a>
             <a class="hover:text-honey-300" href="#visit">Visit</a>
-            <a class="rounded-full px-5 py-2.5 shadow-soft ring-1 transition" x-bind:class="onHero ? 'bg-[#1C110C] text-honey-300 ring-honey-400/35 hover:bg-earth-800' : 'bg-[#1C110C] text-honey-300 ring-honey-500/25 hover:bg-earth-800'" href="#where-to-buy">Where To Buy</a>
+            <a class="rounded-full px-5 py-2.5 shadow-soft transition" x-bind:class="onHero ? 'bg-earth-50 text-earth-800 hover:bg-honey-400' : 'bg-[#1C110C] text-honey-300 hover:bg-earth-800'" href="#where-to-buy">Where To Buy</a>
           </div>
           <button
             type="button"
@@ -329,27 +329,32 @@ const retailLocations = ['Rouse’s', 'Oak Point', 'Southside Produce', 'The Fre
       </section>
 
       <section id="where-to-buy" class="relative overflow-hidden bg-white py-24 sm:py-28">
-        <Image src={bee4} alt="" aria-hidden="true" class="pointer-events-none absolute -bottom-16 -right-20 w-96 opacity-[0.06]" widths={[420, 620]} />
+        <Image src={bee4} alt="" aria-hidden="true" class="pointer-events-none absolute bottom-10 left-10 w-96 opacity-[0.06]" widths={[420, 620]} />
         <div class="mx-auto max-w-7xl px-5 sm:px-8">
-          <div class="grid gap-12 lg:grid-cols-[.78fr_1.22fr] lg:items-start">
-            <div>
+          <div class="grid gap-12 lg:grid-cols-2 lg:items-stretch">
+            <div class="flex flex-col">
               <p class="font-eyebrow text-4xl text-honey-700">Where to buy</p>
               <h2 class="mt-4 max-w-xl font-display text-4xl font-normal leading-tight tracking-wide text-earth-900 sm:text-5xl">
                 Find Janway’s Raw Honey at Baton Rouge area retailers.
               </h2>
-              <p class="mt-5 max-w-xl text-lg  text-earth-600">
+              <p class="mt-5 max-w-xl text-lg leading-8 text-earth-600">
                 Thank you for shopping local and supporting a family business rooted in East Baton Rouge Parish.
               </p>
-              <Image src={honeyFood} alt="Honey drizzled over breakfast jar" class="mt-8 h-72 w-full rounded-lg object-cover shadow-lift" widths={[520, 720]} />
+              <div class="relative mt-8">
+                {retailLocations.map((location, index) => (
+                  <div class:list={[
+                    'flex cursor-default items-center gap-4 border-b border-earth-200 py-5 transition-[padding] duration-200 hover:pl-3',
+                    index === 0 && 'border-t',
+                  ]}>
+                    <span class="h-[7px] w-[7px] shrink-0 rounded-full bg-honey-500"></span>
+                    <p class="flex-1 text-[1.0625rem] font-bold text-earth-900">{location}</p>
+                    <span class="shrink-0 rounded-full bg-earth-50 px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.08em] text-earth-500">Local partner</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div class="relative rounded-lg bg-earth-50 p-6 shadow-soft">
-              {retailLocations.map((location) => (
-                <div class="flex items-center gap-4 border-b border-earth-200 py-5 last:border-b-0">
-                  <span class="h-2 w-2 shrink-0 rounded-full bg-honey-500"></span>
-                  <p class="flex-1 text-lg font-extrabold text-earth-900">{location}</p>
-                  <span class="rounded-full bg-white px-3 py-1 text-[0.68rem] font-extrabold uppercase tracking-[0.08em] text-earth-500 shadow-soft">Local partner</span>
-                </div>
-              ))}
+            <div class="min-h-[420px]">
+              <Image src={honeyFood} alt="Honey drizzled over breakfast jar" class="h-full min-h-[420px] w-full rounded-lg object-cover shadow-lift" widths={[640, 900, 1200]} />
             </div>
           </div>
         </div>
