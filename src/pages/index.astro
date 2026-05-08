@@ -130,7 +130,7 @@ const retailLocations = ['Rouse’s Markets', 'Oak Point Fresh Market', 'Southsi
         <nav class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
           <a href="#top" class="flex items-center gap-3">
             <Image src={logo} alt="Janway Farms raw honey logo" class="h-11 w-11 object-contain" widths={[88]} />
-            <span class="font-display text-lg font-normal leading-snug tracking-wide transition" x-bind:class="onHero ? 'text-white' : 'text-earth-900'">Janway Farms</span>
+            <span class="font-display text-4xl font-normal leading-snug tracking-wide transition" x-bind:class="onHero ? 'text-white' : 'text-earth-900'">JANWAY FARMS</span>
           </a>
           <div class="hidden items-center gap-8 text-sm font-semibold transition md:flex" x-bind:class="onHero ? 'text-white' : 'text-earth-700'">
             <a class="hover:text-honey-300" href="#honey">Honey</a>
@@ -208,7 +208,7 @@ const retailLocations = ['Rouse’s Markets', 'Oak Point Fresh Market', 'Southsi
       </section>
 
       <section id="honey" class="relative overflow-hidden bg-earth-50 py-24 sm:py-28">
-        <Image src={bee2} alt="" aria-hidden="true" class="pointer-events-none absolute -right-20 top-12 w-72 rotate-12 opacity-[0.07] sm:w-96" widths={[360, 520]} />
+        <Image src={bee3} alt="" aria-hidden="true" class="pointer-events-none absolute top-5 right-5 z-10 w-96 -scale-x-100 opacity-[0.06]" widths={[420, 620]} />
         <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-earth-900/10 to-transparent"></div>
         <div class="mx-auto grid max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
           <div class="relative">
@@ -271,21 +271,20 @@ const retailLocations = ['Rouse’s Markets', 'Oak Point Fresh Market', 'Southsi
       </section>
 
       <section id="farm" class="sec-farm relative overflow-hidden bg-honey-100 py-0">
-        <Image src={bee3} alt="" aria-hidden="true" class="pointer-events-none absolute bottom-20 left-5 z-10 w-96 -scale-x-100 opacity-[0.06]" widths={[420, 620]} />
         <div class="relative grid min-h-[620px] w-full lg:grid-cols-[.54fr_.46fr]">
           <div class="relative z-10 flex items-center px-5 py-24 sm:px-8 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] lg:pr-8">
-            <div class="max-w-2xl lg:ml-auto lg:max-w-xl">
+            <div class="max-w-2xl lg:max-w-xl">
               <p class="font-eyebrow text-4xl text-honey-700">Behind the jar</p>
               <h2 class="mt-4 max-w-xl font-display text-4xl font-normal leading-tight tracking-wide text-earth-900 sm:text-5xl">
-                Our mission is simple: care for the bees, harvest honest honey, and support the local community.
+                Our mission: care for the bees and support our earth.
               </h2>
               <p class="mt-6 max-w-xl text-lg  text-earth-700">
                 Janway’s Raw Honey is family-owned and operated by Josh Janway in East Baton Rouge Parish. Every jar starts with careful hive checks, sustainable farming practices, and a commitment to keeping honey raw, unprocessed, and unfiltered.
               </p>
               <div class="mt-8 flex flex-wrap gap-3">
-                <span class="inline-flex items-center rounded-lg border-2 border-honey-700/20 bg-honey-50/45 px-4 py-3 text-sm font-extrabold text-earth-800 shadow-soft">100% Raw</span>
-                <span class="inline-flex items-center rounded-lg border-2 border-honey-700/20 bg-honey-50/45 px-4 py-3 text-sm font-extrabold text-earth-800 shadow-soft">Family-Owned</span>
-                <span class="inline-flex items-center rounded-lg border-2 border-honey-700/20 bg-honey-50/45 px-4 py-3 text-sm font-extrabold text-earth-800 shadow-soft">Sustainable Care</span>
+                <span class="inline-flex items-center rounded-lg border-2 border-honey-700/20 bg-honey-50/75 px-4 py-3 text-sm font-extrabold text-earth-800 shadow-soft">100% Raw</span>
+                <span class="inline-flex items-center rounded-lg border-2 border-honey-700/20 bg-honey-50/75 px-4 py-3 text-sm font-extrabold text-earth-800 shadow-soft">Family-Owned</span>
+                <span class="inline-flex items-center rounded-lg border-2 border-honey-700/20 bg-honey-50/75 px-4 py-3 text-sm font-extrabold text-earth-800 shadow-soft">Sustainable Care</span>
               </div>
             </div>
           </div>
@@ -299,6 +298,11 @@ const retailLocations = ['Rouse’s Markets', 'Oak Point Fresh Market', 'Southsi
 
       <section id="visit" class="relative overflow-hidden bg-field-900 py-24 text-white sm:py-28">
         <div class="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[.95fr_1.05fr] lg:items-center">
+          <div class="h-[520px] overflow-hidden rounded-lg shadow-lift">
+            <video class="media-video" autoplay muted loop playsinline preload="metadata" poster={sunflowers.src}>
+              <source src="https://cdn.pixabay.com/video/2021/02/19/65672-515351571_large.mp4" type="video/mp4" />
+            </video>
+          </div>
           <div>
             <p class="font-eyebrow text-4xl text-honey-300">Sunflower season</p>
             <h2 class="mt-4 max-w-xl font-display text-4xl font-normal leading-tight tracking-wide sm:text-5xl">
@@ -319,11 +323,6 @@ const retailLocations = ['Rouse’s Markets', 'Oak Point Fresh Market', 'Southsi
                 <p class="mt-2 text-sm leading-6 text-field-100">Raw honey carries the character of Baton Rouge blooms and surrounding parish forage.</p>
               </div>
             </div>
-          </div>
-          <div class="h-[520px] overflow-hidden rounded-lg shadow-lift">
-            <video class="media-video" autoplay muted loop playsinline preload="metadata" poster={sunflowers.src}>
-              <source src="https://cdn.pixabay.com/video/2021/02/19/65672-515351571_large.mp4" type="video/mp4" />
-            </video>
           </div>
         </div>
       </section>
@@ -362,8 +361,8 @@ const retailLocations = ['Rouse’s Markets', 'Oak Point Fresh Market', 'Southsi
 
       <footer class="relative overflow-hidden bg-[#1C110C] py-20 text-honey-50">
         <!--<Image src={bee} alt="" aria-hidden="true" class="pointer-events-none absolute -bottom-28 -right-16 w-96 rotate-12 opacity-[0.03]" widths={[420, 620]} />-->
-        <div class="relative mx-auto grid max-w-7xl gap-14 px-5 sm:px-8 md:grid-cols-[1.15fr_.8fr_.65fr] lg:gap-24 xl:gap-32">
-          <div class="md:pl-8 lg:pl-20">
+        <div class="relative mx-auto grid max-w-7xl gap-14 px-5 sm:px-8 md:grid-cols-[2fr_1fr_.5fr] lg:gap-24 xl:gap-32">
+          <div>
             <a href="#top" class="inline-flex items-center gap-3">
               <Image src={logo} alt="Janway Farms raw honey logo" class="h-16 w-16 object-contain" widths={[128]} />
               <span class="font-display text-2xl font-normal tracking-wide text-honey-50">Janway Farms</span>
