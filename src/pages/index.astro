@@ -132,15 +132,65 @@ const retailLocations = ['Rouse’s Markets', 'Oak Point Fresh Market', 'Southsi
 
       .bee-flight-trail path {
         fill: none;
-        stroke: hsl(35 18% 6% / 0.05);
-        stroke-width: 5;
+        stroke: hsl(35 18% 6% / 0.72);
+        stroke-width: 3.5;
         stroke-linecap: round;
         stroke-linejoin: round;
-        stroke-dasharray: 14 32;
+        stroke-dasharray: 13 22;
+      }
+
+      .bee-flight-cursor {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 61;
+        width: 42px;
+        height: 32px;
+        pointer-events: none;
+        opacity: 0;
+        transform: translate3d(-80px, -80px, 0);
+        transform-origin: 50% 50%;
+        transition: opacity 180ms ease;
+        will-change: transform;
+      }
+
+      .bee-flight-cursor.is-active {
+        opacity: 1;
+      }
+
+      .bee-flight-cursor svg {
+        display: block;
+        height: 100%;
+        overflow: visible;
+        width: 100%;
+      }
+
+      .bee-wing {
+        animation: beeWingFlutter 110ms ease-in-out infinite alternate;
+        transform-box: fill-box;
+      }
+
+      .bee-wing-left {
+        transform-origin: 85% 80%;
+      }
+
+      .bee-wing-right {
+        animation-delay: 45ms;
+        transform-origin: 15% 80%;
+      }
+
+      @keyframes beeWingFlutter {
+        from {
+          transform: rotate(-9deg) scaleY(0.94);
+        }
+        to {
+          transform: rotate(10deg) scaleY(1.04);
+        }
       }
 
       @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
-        .bee-flight-trail {
+        .bee-flight-trail,
+        .bee-flight-cursor {
           display: none;
         }
       }
@@ -150,6 +200,16 @@ const retailLocations = ['Rouse’s Markets', 'Oak Point Fresh Market', 'Southsi
     <svg class="bee-flight-trail" aria-hidden="true">
       <path id="bee-flight-path" d=""></path>
     </svg>
+    <div class="bee-flight-cursor" aria-hidden="true">
+      <svg viewBox="0 0 64 44" role="presentation">
+        <path class="bee-wing bee-wing-left" d="M39 16C43 3 56 -2 60 7C64 16 53 24 42 24" fill="white" fill-opacity="0.48" stroke="hsl(35 18% 6% / 0.78)" stroke-width="3" stroke-linecap="round" />
+        <path class="bee-wing bee-wing-right" d="M38 25C48 24 61 31 57 39C53 47 39 39 34 29" fill="white" fill-opacity="0.38" stroke="hsl(35 18% 6% / 0.78)" stroke-width="3" stroke-linecap="round" />
+        <ellipse cx="27" cy="23" rx="19" ry="12" fill="hsl(42 94% 55%)" stroke="hsl(35 18% 6%)" stroke-width="4" />
+        <path d="M16 13C15 21 17 27 23 34" stroke="hsl(35 18% 6%)" stroke-width="4" stroke-linecap="round" />
+        <path d="M29 11C27 20 30 29 37 34" stroke="hsl(35 18% 6%)" stroke-width="4" stroke-linecap="round" />
+        <circle cx="48" cy="21" r="8" fill="hsl(35 18% 6%)" />
+      </svg>
+    </div>
     <main
       x-data="{ menuOpen: false, selected: 'Raw Honey', onHero: true, updateNav() { this.onHero = window.scrollY < 24 } }"
       x-init="updateNav()"
@@ -367,7 +427,7 @@ const retailLocations = ['Rouse’s Markets', 'Oak Point Fresh Market', 'Southsi
               <h2 class="mt-4 max-w-xl font-display text-4xl font-normal leading-tight tracking-wide text-earth-900 sm:text-5xl">
                 Find Janway’s Raw Honey at Baton Rouge area retailers.
               </h2>
-              <p class="mt-5 max-w-xl text-lg leading-8 text-earth-600">
+              <p class="mt-5 max-w-xl text-lg text-earth-600">
                 Thank you for shopping local and supporting a family business rooted in East Baton Rouge Parish.
               </p>
               <div class="relative mt-8 bg-white/70">
@@ -426,10 +486,19 @@ const retailLocations = ['Rouse’s Markets', 'Oak Point Fresh Market', 'Southsi
     <script>
       const flightTrail = document.querySelector('.bee-flight-trail');
       const flightPath = document.querySelector('#bee-flight-path');
+      const flightBee = document.querySelector('.bee-flight-cursor');
       const points = [];
-      const maxPoints = 16;
+      const maxPoints = 18;
       let rafId = 0;
       let hideTimer = 0;
+      let targetX = 0;
+      let targetY = 0;
+      let beeX = 0;
+      let beeY = 0;
+      let previousBeeX = 0;
+      let previousBeeY = 0;
+      let hasBeePosition = false;
+      let lastPointTime = 0;
 
       function syncTrailViewBox() {
         flightTrail?.setAttribute('viewBox', `0 0 ${window.innerWidth || 1} ${window.innerHeight || 1}`);
@@ -456,8 +525,34 @@ const retailLocations = ['Rouse’s Markets', 'Oak Point Fresh Market', 'Southsi
       function queueRender() {
         if (rafId) return;
         rafId = window.requestAnimationFrame(() => {
+          const now = performance.now();
+          const ease = 0.22;
+
+          previousBeeX = beeX;
+          previousBeeY = beeY;
+          beeX += (targetX - beeX) * ease;
+          beeY += (targetY - beeY) * ease;
+
+          const dx = beeX - previousBeeX;
+          const dy = beeY - previousBeeY;
+          const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+          if (flightBee) {
+            flightBee.style.transform = `translate3d(${(beeX - 21).toFixed(1)}px, ${(beeY - 16).toFixed(1)}px, 0) rotate(${angle.toFixed(1)}deg)`;
+          }
+
+          if (now - lastPointTime > 34) {
+            points.push({ x: beeX, y: beeY });
+            if (points.length > maxPoints) points.shift();
+            lastPointTime = now;
+          }
+
           buildPath();
           rafId = 0;
+
+          if (flightTrail?.classList.contains('is-active')) {
+            queueRender();
+          }
         });
       }
 
@@ -466,16 +561,28 @@ const retailLocations = ['Rouse’s Markets', 'Oak Point Fresh Market', 'Southsi
         (event) => {
           if (event.pointerType === 'touch') return;
 
-          points.push({ x: event.clientX, y: event.clientY });
-          if (points.length > maxPoints) points.shift();
+          targetX = event.clientX;
+          targetY = event.clientY;
+
+          if (!hasBeePosition) {
+            beeX = targetX;
+            beeY = targetY;
+            previousBeeX = beeX - 1;
+            previousBeeY = beeY;
+            points.push({ x: beeX, y: beeY });
+            hasBeePosition = true;
+          }
 
           flightTrail?.classList.add('is-active');
+          flightBee?.classList.add('is-active');
           window.clearTimeout(hideTimer);
           hideTimer = window.setTimeout(() => {
             flightTrail?.classList.remove('is-active');
+            flightBee?.classList.remove('is-active');
             points.length = 0;
+            hasBeePosition = false;
             flightPath?.setAttribute('d', '');
-          }, 1600);
+          }, 1800);
 
           queueRender();
         },
